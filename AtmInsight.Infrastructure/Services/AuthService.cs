@@ -26,7 +26,7 @@ public class AuthService : IAuthService
         var usuario = await _context.Usuarios
             .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
 
-        if (usuario == null) return null;
+        if (usuario == null || !BCrypt.Net.BCrypt.Verify(password, usuario.PasswordHash)) return null;
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]!);
