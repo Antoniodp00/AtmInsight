@@ -24,7 +24,7 @@ public class AuthService : IAuthService
     {
         // Buscamos al usuario en la tabla
         var usuario = await _context.Usuarios
-            .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
+            .FirstOrDefaultAsync(u => u.Username == username);
 
         if (usuario == null || !BCrypt.Net.BCrypt.Verify(password, usuario.PasswordHash)) return null;
 

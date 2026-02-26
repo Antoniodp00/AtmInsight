@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AtmInsight.Domain.Entities
@@ -15,6 +16,11 @@ public long id { get; set; }
         public string Rol { get; set; } = string.Empty; // Ejemplo: "Usuario", "Tecnico"
         public string IdiomaPreferido { get; set; } = "es"; // Valor predeterminado: español
         public bool Activo { get; set; } = true; // Indica si el usuario está activo o inactivo
+
+        [JsonIgnore]
+        public virtual ICollection<Incidencia> IncidenciasAsignadas { get; set; } = new List<Incidencia>(); // Para técnicos
+
+
 
     }
 }

@@ -18,4 +18,8 @@
     <ProjectReference Include="..\AtmInsight.Domain\AtmInsight.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
