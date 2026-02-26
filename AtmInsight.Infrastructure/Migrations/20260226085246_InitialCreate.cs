@@ -86,7 +86,7 @@ namespace AtmInsight.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AtmId = table.Column<string>(type: "longtext", nullable: false)
+                    AtmId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     TotalTransacciones = table.Column<int>(type: "int", nullable: false),
@@ -95,18 +95,17 @@ namespace AtmInsight.Infrastructure.Migrations
                     UsuariosUnicos = table.Column<int>(type: "int", nullable: false),
                     TransaccionesRetiro = table.Column<int>(type: "int", nullable: false),
                     TransaccionesDeposito = table.Column<int>(type: "int", nullable: false),
-                    TransaccionesConsultaSaldo = table.Column<int>(type: "int", nullable: false),
-                    CajeroId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    TransaccionesConsultaSaldo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EstadisticaDiarias", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EstadisticaDiarias_Cajeros_CajeroId",
-                        column: x => x.CajeroId,
+                        name: "FK_EstadisticaDiarias_Cajeros_AtmId",
+                        column: x => x.AtmId,
                         principalTable: "Cajeros",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -116,7 +115,7 @@ namespace AtmInsight.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AtmId = table.Column<string>(type: "longtext", nullable: false)
+                    AtmId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     FechaHora = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Tipo = table.Column<string>(type: "longtext", nullable: false)
@@ -126,18 +125,17 @@ namespace AtmInsight.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Resultado = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProcesadaEtl = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CajeroId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    ProcesadaEtl = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transacciones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transacciones_Cajeros_CajeroId",
-                        column: x => x.CajeroId,
+                        name: "FK_Transacciones_Cajeros_AtmId",
+                        column: x => x.AtmId,
                         principalTable: "Cajeros",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -147,7 +145,7 @@ namespace AtmInsight.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AtmId = table.Column<string>(type: "longtext", nullable: false)
+                    AtmId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TecnicoId = table.Column<long>(type: "bigint", nullable: true),
                     FechaApertura = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -156,18 +154,17 @@ namespace AtmInsight.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Estado = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Prioridad = table.Column<int>(type: "int", nullable: false),
-                    CajeroId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Prioridad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Incidencias", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Incidencias_Cajeros_CajeroId",
-                        column: x => x.CajeroId,
+                        name: "FK_Incidencias_Cajeros_AtmId",
+                        column: x => x.AtmId,
                         principalTable: "Cajeros",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Incidencias_Usuarios_TecnicoId",
                         column: x => x.TecnicoId,
@@ -215,14 +212,14 @@ namespace AtmInsight.Infrastructure.Migrations
                 column: "RepuestoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EstadisticaDiarias_CajeroId",
+                name: "IX_EstadisticaDiarias_AtmId",
                 table: "EstadisticaDiarias",
-                column: "CajeroId");
+                column: "AtmId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Incidencias_CajeroId",
+                name: "IX_Incidencias_AtmId",
                 table: "Incidencias",
-                column: "CajeroId");
+                column: "AtmId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Incidencias_TecnicoId",
@@ -230,9 +227,9 @@ namespace AtmInsight.Infrastructure.Migrations
                 column: "TecnicoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacciones_CajeroId",
+                name: "IX_Transacciones_AtmId",
                 table: "Transacciones",
-                column: "CajeroId");
+                column: "AtmId");
         }
 
         /// <inheritdoc />

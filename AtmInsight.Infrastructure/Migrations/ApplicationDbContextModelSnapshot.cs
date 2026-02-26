@@ -88,9 +88,6 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.Property<string>("AtmId")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CajeroId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Fecha")
@@ -119,7 +116,7 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CajeroId");
+                    b.HasIndex("AtmId");
 
                     b.ToTable("EstadisticaDiarias");
                 });
@@ -134,9 +131,6 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.Property<string>("AtmId")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CajeroId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Descripcion")
@@ -161,7 +155,7 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CajeroId");
+                    b.HasIndex("AtmId");
 
                     b.HasIndex("TecnicoId");
 
@@ -205,9 +199,6 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.Property<string>("AtmId")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CajeroId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("FechaHora")
@@ -233,7 +224,7 @@ namespace AtmInsight.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CajeroId");
+                    b.HasIndex("AtmId");
 
                     b.ToTable("Transacciones");
                 });
@@ -277,7 +268,7 @@ namespace AtmInsight.Infrastructure.Migrations
             modelBuilder.Entity("AtmInsight.Domain.Entities.ConsumoRepuesto", b =>
                 {
                     b.HasOne("AtmInsight.Domain.Entities.Incidencia", "Incidencia")
-                        .WithMany()
+                        .WithMany("ConsumosRepuestos")
                         .HasForeignKey("IncidenciaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -296,8 +287,10 @@ namespace AtmInsight.Infrastructure.Migrations
             modelBuilder.Entity("AtmInsight.Domain.Entities.EstadisticaDiaria", b =>
                 {
                     b.HasOne("AtmInsight.Domain.Entities.Cajero", "Cajero")
-                        .WithMany()
-                        .HasForeignKey("CajeroId");
+                        .WithMany("EstadisticasDiarias")
+                        .HasForeignKey("AtmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cajero");
                 });
@@ -305,11 +298,13 @@ namespace AtmInsight.Infrastructure.Migrations
             modelBuilder.Entity("AtmInsight.Domain.Entities.Incidencia", b =>
                 {
                     b.HasOne("AtmInsight.Domain.Entities.Cajero", "Cajero")
-                        .WithMany()
-                        .HasForeignKey("CajeroId");
+                        .WithMany("Incidencias")
+                        .HasForeignKey("AtmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AtmInsight.Domain.Entities.Usuario", "Tecnico")
-                        .WithMany()
+                        .WithMany("IncidenciasAsignadas")
                         .HasForeignKey("TecnicoId");
 
                     b.Navigation("Cajero");
@@ -320,10 +315,31 @@ namespace AtmInsight.Infrastructure.Migrations
             modelBuilder.Entity("AtmInsight.Domain.Entities.Transaccion", b =>
                 {
                     b.HasOne("AtmInsight.Domain.Entities.Cajero", "Cajero")
-                        .WithMany()
-                        .HasForeignKey("CajeroId");
+                        .WithMany("Transacciones")
+                        .HasForeignKey("AtmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cajero");
+                });
+
+            modelBuilder.Entity("AtmInsight.Domain.Entities.Cajero", b =>
+                {
+                    b.Navigation("EstadisticasDiarias");
+
+                    b.Navigation("Incidencias");
+
+                    b.Navigation("Transacciones");
+                });
+
+            modelBuilder.Entity("AtmInsight.Domain.Entities.Incidencia", b =>
+                {
+                    b.Navigation("ConsumosRepuestos");
+                });
+
+            modelBuilder.Entity("AtmInsight.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("IncidenciasAsignadas");
                 });
 #pragma warning restore 612, 618
         }

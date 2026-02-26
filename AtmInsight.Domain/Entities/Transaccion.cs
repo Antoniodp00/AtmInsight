@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace AtmInsight.Domain.Entities
         public string TarjetaHash { get; set; } = string.Empty; // Para anonimizar la información de la tarjeta
         public string Resultado { get; set; } = string.Empty; // Ejemplo: "Aprobada", "Rechazada", "Error"
         public bool ProcesadaEtl { get; set; } = false; // Indica si la transacción ha sido procesada por el ETL
-
-       public virtual Cajero? Cajero { get; set; } = null!;
+        [ForeignKey("AtmId")]
+        public virtual Cajero? Cajero { get; set; } = null!;
     }
 }

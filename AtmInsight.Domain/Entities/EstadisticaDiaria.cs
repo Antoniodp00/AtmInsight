@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace AtmInsight.Domain.Entities
         public int TransaccionesRetiro { get; set; }
         public int TransaccionesDeposito { get; set; }
         public int TransaccionesConsultaSaldo { get; set; }
+        [ForeignKey("AtmId")]
         public virtual Cajero? Cajero { get; set; } = null!;
     }
 }

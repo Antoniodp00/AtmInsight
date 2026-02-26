@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AtmInsight.Domain.Entities
@@ -15,5 +16,12 @@ namespace AtmInsight.Domain.Entities
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
         public bool Activo { get; set; } = true;
+        [JsonIgnore]
+        public virtual ICollection<Transaccion> Transacciones { get; set; } = new List<Transaccion>();
+        [JsonIgnore]
+        public virtual ICollection<Incidencia> Incidencias { get; set; } = new List<Incidencia>();
+        [JsonIgnore]
+        public virtual ICollection<EstadisticaDiaria> EstadisticasDiarias { get; set; } = new List<EstadisticaDiaria>();
+
     }
 }
