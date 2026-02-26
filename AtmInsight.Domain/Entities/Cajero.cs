@@ -12,10 +12,8 @@ namespace AtmInsight.Domain.Entities
         public string Ubicacion { get; set; } = string.Empty;
         public string Ciudad { get; set; } = string.Empty;
         public string? Modelo { get; set; }
-
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
-
         public bool Activo { get; set; } = true;
     }
 }
