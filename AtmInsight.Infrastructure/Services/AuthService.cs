@@ -22,7 +22,7 @@ public class AuthService : IAuthService
 
     public async Task<string?> LoginAsync(string username, string password)
     {
-        // Buscamos al usuario en la tabla que ya creaste
+        // Buscamos al usuario en la tabla
         var usuario = await _context.Usuarios
             .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
 
